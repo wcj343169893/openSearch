@@ -14,7 +14,7 @@
 			"OpenSearch\\Test\\" : "tests"
 		}
 	},
-	"name" : "mofing/openSearch",
+	"name" : "mofing/opensearch",
 	"type" : "library",
 	"description" : "opensearch-sdk-php",
 	"require" : {
