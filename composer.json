@@ -1,0 +1,27 @@
+{
+	"keywords" : [
+		"opensearch",
+		"sdk",
+		"aliyun"
+	],
+	"autoload" : {
+		"psr-4" : {
+			"OpenSearch\\" : "src/OpenSearch"
+		}
+	},
+	"autoload-dev" : {
+		"psr-4" : {
+			"OpenSearch\\Test\\" : "tests"
+		}
+	},
+	"name" : "mofing/openSearch",
+	"type" : "library",
+	"description" : "opensearch-sdk-php",
+	"require" : {
+		"php" : ">=5.6",
+		"packaged/thrift" : "~0.10"
+	},
+	"require-dev" : {
+		"phpunit/phpunit" : "4.5.*"
+	}
+}
