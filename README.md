@@ -15,11 +15,16 @@ $ composer install "mofing/opensearch":"~1.0"
 ```
 
 ## 用法
+###1.获取key和secret
+ 在 <https://ak-console.aliyun.com/#/accesskey> 下的Access Key管理，可以适用阿里云的很多sdk，所以建议写成静态变量
 ```php
-//获取key和secret  
-//<https://ak-console.aliyun.com/#/accesskey> 下的Access Key管理，可以适用阿里云的很多sdk，所以建议写成静态变量
 $accessKey = "LTAICZ5bcHEHwg3d";//Access Key ID
 $secret = "kFLCYaxTFedSNh9rJcjM3KHBkDoxlc";//Access Key Secret
+```
+
+###2.配置搜索参数
+
+```php
 $host = "http://opensearch-cn-hangzhou.aliyuncs.com";//公网API域名或者内网API域名
 $options = [
     'debug' => true
