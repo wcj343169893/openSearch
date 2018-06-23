@@ -289,7 +289,8 @@ class OpenSearchClient extends OpenSearch {
         curl_close($session);
 
         $openSearchResult = new OpenSearchResult();
-        $openSearchResult->result = $response;
+        //$openSearchResult->result = $response;
+        $openSearchResult->setResult($response);
 
         if ($this->debug) {
             $openSearchResult->traceInfo = $this->getDebugInfo($out, $items);

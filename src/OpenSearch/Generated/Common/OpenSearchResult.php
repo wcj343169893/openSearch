@@ -9,9 +9,9 @@ class OpenSearchResult {
     static $_TSPEC;
     
     /**
-     * @var string
+     * @var array
      */
-    public $result = null;
+    public $result = [];
     /**
      * @var \OpenSearch\Generated\Common\TraceInfo
      */
@@ -39,34 +39,102 @@ class OpenSearchResult {
         }
         if (is_array($vals)) {
             if (isset($vals['result'])) {
-                $this->result = $vals['result'];
+                $result = json_decode($vals['result'],true);
+                //如果成功返回，直接格式化成数组
+                if(!empty($result) && $result["status"]=="OK"){
+                    $this->result =$result["result"];
+                }
             }
             if (isset($vals['traceInfo'])) {
                 $this->traceInfo = $vals['traceInfo'];
             }
         }
     }
+    public function setResult($str){
+        $result = json_decode($str,true);
+        //如果成功返回，直接格式化成数组
+        if(!empty($result) && $result["status"]=="OK"){
+            $this->result =$result["result"];
+        }
+    }
     
     public function getName() {
         return 'OpenSearchResult';
     }
+    /**
+     * 格式化返回的数据为json对象
+     * @return array
+     */
     public function getItems(){
-        $result = json_decode($this->result);
-        if($result->status=="OK"){
-            $this->items=$result->result->items;
-            $this->searchtime=$result->result->searchtime;
-            $this->total=$result->result->total;
-            $this->num=$result->result->num;
-            $this->viewtotal=$result->result->viewtotal;
+        if(!empty($this->result)){
+            //移除index_name
+            $items=[];
+            foreach ($this->result["items"] as $item){
+                if(isset($item["index_name"])){
+                    unset($item["index_name"]);
+                }
+                $items[]=$item;
+            }
+            return $items;
         }
-        return $this->items;
+        return [];
     }
+    /**
+     * 获取搜索时间, 例如： 0.014233
+     * @return number
+     */
+    public function getSearchTime(){
+        if(!empty($this->result)){
+            return floatval($this->result["searchtime"]);
+        }
+        return 0;
+    }
+    /**
+     * 获取搜索总数 
+     * @return string
+     */
+    public function getTotal(){
+        if(!empty($this->result)){
+            return intval($this->result["total"]);
+        }
+        return 0;
+    }
+    /**
+     * 返回实际得到的数量
+     * @return number
+     */
+    public function getNum(){
+        if(!empty($this->result)){
+            return intval($this->result["num"]);
+        }
+        return 0;
+    }
+    /**
+     * 返回可返回的总数
+     * @return number
+     */
+    public function getViewtotal(){
+        if(!empty($this->result)){
+            return intval($this->result["viewtotal"]);
+        }
+        return 0;
+    }
+    /**
+     * 格式化result
+     */
+    public function getResult(){
+        return $this->result;
+    }
+    /**
+     * 只返回查询的id
+     * @return array
+     */
     public function getIds(){
-        $this->getItems();
         $ids=[];
-        if(!empty($this->items)){
-            foreach ($this->items as $item){
-                $ids[]=$item->id;
+        $items=$this->getItems();
+        if(!empty($items)){
+            foreach ($items as $item){
+                $ids[]=$item["id"];
             }
         }
         return $ids;
