@@ -53,8 +53,16 @@ class OpenSearchResult {
     public function setResult($str){
         $result = json_decode($str,true);
         //如果成功返回，直接格式化成数组
-        if(!empty($result) && $result["status"]=="OK"){
-            $this->result =$result["result"];
+        if(!empty($result)){
+            if(!empty($result["status"]) && $result["status"]=="OK"){
+                //关键词搜索结果
+                $this->result =$result["result"];
+            }elseif (!empty($result["suggestions"])){
+                //下拉建议
+                foreach ($result["suggestions"] as $re){
+                    $this->result[]=$re["suggestion"];
+                }
+            }
         }
     }
     
