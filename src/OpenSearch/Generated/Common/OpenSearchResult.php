@@ -137,12 +137,12 @@ class OpenSearchResult {
      * 只返回查询的id
      * @return array
      */
-    public function getIds(){
+    public function getIds($key="id"){
         $ids=[];
         $items=$this->getItems();
         if(!empty($items)){
             foreach ($items as $item){
-                $ids[]=$item["id"];
+                $ids[]=$item[$key];
             }
         }
         return $ids;
